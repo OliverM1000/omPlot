@@ -1,0 +1,38 @@
+.masterDiv
+{
+	width: 798px;
+	height: 478px;
+	padding: 0px 0px;
+	margin: auto;
+	border: 1px solid #363535;
+}
+
+.masterPane{	
+	width: 600px;
+	height: 400px;
+	margin: 0px 0px;
+	border:1px solid #363535;
+}
+
+.box{
+	width: 90%;			
+	padding: 2px 0px;
+	margin: 8px 0px;
+	font-family: sans-serif;
+	background: #F5F5F5;
+	border: 1px solid #C0C0C0;
+	border-radius: 5px;
+	overflow: auto;
+}
+
+
+.textBox{	
+	display: inline-block;
+	width: 240px;
+	font-family: Courier New;
+	font-size: 48px;
+	text-align: right;
+	margin: 4px 4px;
+	padding: 8px 8px;
+	border:2px solid #363535;"	
+}

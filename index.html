@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<!---------------------------------------------------------------------------------------------------------------->
+	<head>
+		<script src="omPlot.js"></script>
+		<link rel="stylesheet" href="style.css">		
+	</head>
+<!--<body onload="Start()">-------------------------------------------------------------------------------------------------------------->
+	<body>	
+		<div style ="float: left">			
+			<canvas width="2420" height="720"  style = "width: 1210px; height: 360px; margin: 4px 4px; border:1px solid #363535;" id="plotAll"></canvas>
+			<br>
+			<canvas width="1200" height="600"  style = "width: 600px; height: 300px; margin: 4px 4px; border:1px solid #363535;" id="plotCh1"></canvas><canvas width="1200" height="600"  style = "width: 600px; height: 300px; margin: 4px 4px; border:1px solid #363535;" id="plotCh2"></canvas>
+			<br>
+			<canvas width="1200" height="600"  style = "width: 600px; height: 300px; margin: 4px 4px; border:1px solid #363535;" id="plotCh3"></canvas><canvas width="1200" height="600"  style = "width: 600px; height: 300px; margin: 4px 4px; border:1px solid #363535;" id="plotCh4"></canvas>
+		</div>
+		<div style ="float: right; font-family: sans-serif; font-size: 48px;">
+			Ch1: <span class = "textBox" id="txtCh1"><b>-00.0000</b></span>
+			<br>
+			Ch2: <span class = "textBox" id="txtCh2"><b>-00.0000</b></span>
+			<br>
+			Ch3: <span class = "textBox" id="txtCh3"><b>-00.0000</b></span>
+			<br>
+			Ch4: <span class = "textBox" id="txtCh4"><b>-00.0000</b></span>
+		</div>		
+<!---------------------------------------------------------------------------------------------------------------->
+		<script>
+			var time = 0;
+			var max_len = 500;
+			var arr_x = [[], [], [], []];
+			var arr_y = [[], [], [], []];
+						
+			
+			
+			//create and define all plot windows - 5 in total
+			var plotAll = new omPlot(document.getElementById("plotAll"), 4);
+			plotAll.left_margin = 0.06;
+			plotAll.right_margin = 0.05;
+			plotAll.top_margin = 0.05;
+			plotAll.bottom_margin = 0.15;
+			plotAll.draw_x_axis_major_grid = true;
+			plotAll.draw_x_axis_minor_grid = true;
+			plotAll.draw_y_axis_major_grid = true;
+			plotAll.draw_y_axis_minor_grid = true;
+			plotAll.title = "";
+			plotAll.dataColor = ["#ff0000", "#0066ff", "#33cc33", "#ff9900"];
+			plotAll.drawSymbol = false;
+			plotAll.lineWidth = 5;			
+			
+			
+			var plotCh1 = new omPlot(document.getElementById("plotCh1"), 1);
+			plotCh1.left_margin = 0.15;
+			plotCh1.right_margin = 0.05;
+			plotCh1.top_margin = 0.15;
+			plotCh1.bottom_margin = 0.15;
+			plotCh1.dataColor = ["#ff0000"];
+			plotCh1.draw_x_axis_major_grid = true;
+			plotCh1.draw_y_axis_major_grid = true;
+			plotCh1.title = "Channel 1";
+			
+			var plotCh2 = new omPlot(document.getElementById("plotCh2"), 1);
+			plotCh2.left_margin = 0.15;
+			plotCh2.right_margin = 0.05;
+			plotCh2.top_margin = 0.15;
+			plotCh2.bottom_margin = 0.15;
+			plotCh2.dataColor = ["#0066ff"];
+			plotCh2.draw_x_axis_major_grid = true;
+			plotCh2.draw_y_axis_major_grid = true;
+			plotCh2.title = "Channel 2";
+			
+			var plotCh3 = new omPlot(document.getElementById("plotCh3"), 1);
+			plotCh3.left_margin = 0.15;
+			plotCh3.right_margin = 0.05;
+			plotCh3.top_margin = 0.15;
+			plotCh3.bottom_margin = 0.15;
+			plotCh3.dataColor = ["#33cc33"];
+			plotCh3.draw_x_axis_major_grid = true;
+			plotCh3.draw_y_axis_major_grid = true;
+			plotCh3.title = "Channel 3";
+			
+			var plotCh4 = new omPlot(document.getElementById("plotCh4"), 1);
+			plotCh4.left_margin = 0.15;
+			plotCh4.right_margin = 0.05;
+			plotCh4.top_margin = 0.15;
+			plotCh4.bottom_margin = 0.15;
+			plotCh4.dataColor = ["#ff9900"];
+			plotCh4.draw_x_axis_major_grid = true;
+			plotCh4.draw_y_axis_major_grid = true;
+			plotCh4.title = "Channel 4";
+			
+			
+			// draw everything for the first time
+			plotAll.rescalePlot();
+			
+			
+			var timer = setInterval(Simulation, 250);
+			
+			function Simulation()
+			{
+				var i;
+				var tmp_time;
+				var tmp_value;
+				var tmp_ref;
+				
+				//-------------------------------------------
+				tmp_time = time/100 + Math.random()/1000;
+				arr_x[0].push(tmp_time);
+				arr_y[0].push(Math.sin(25 * tmp_time));
+				//-------------------------------------------			
+				tmp_time = time/100 + Math.random()/1000;
+				arr_x[1].push(tmp_time);
+				arr_y[1].push(1.1 * Math.sin(10 * tmp_time + 1));
+				//-------------------------------------------				
+				tmp_time = time/100 + Math.random()/1000;
+				arr_x[2].push(tmp_time);
+				arr_y[2].push(4.3 * Math.sin(8 * tmp_time + 1.5));
+				//-------------------------------------------				
+				tmp_time = time/100 + Math.random()/1000;
+				arr_x[3].push(tmp_time);
+				arr_y[3].push(0.4 * Math.sin(14 * tmp_time + 0.8));
+				//-------------------------------------------
+				
+				
+				
+				//-------------------------------------------
+				tmp_value = arr_y[0][arr_y[0].length - 1];
+				tmp_ref = document.getElementById("txtCh1");
+				if(tmp_value < 0){					
+					tmp_ref.style = "color: red";
+					plotCh1.paneColor = "#ff0000";
+				}
+				else{
+					tmp_ref.style = "";
+					plotCh1.paneColor = "#e3eaa7";
+				}
+				tmp_ref.textContent = tmp_value.toFixed(4);
+				//-------------------------------------------
+				tmp_value = arr_y[1][arr_y[0].length - 1];
+				tmp_ref = document.getElementById("txtCh2");
+				if(tmp_value < 0){					
+					tmp_ref.style = "color: red";
+					plotCh2.paneColor = "#ff0000";
+				}
+				else{
+					tmp_ref.style = "";
+					plotCh2.paneColor = "#e3eaa7";
+				}
+				tmp_ref.textContent = tmp_value.toFixed(4);
+				//-------------------------------------------
+				tmp_value = arr_y[2][arr_y[0].length - 1];
+				tmp_ref = document.getElementById("txtCh3");
+				if(tmp_value < 0){					
+					tmp_ref.style = "color: red";
+					plotCh3.paneColor = "#ff0000";
+				}
+				else{
+					tmp_ref.style = "";
+					plotCh3.paneColor = "#e3eaa7";
+				}
+				tmp_ref.textContent = tmp_value.toFixed(4);
+				//-------------------------------------------
+				tmp_value = arr_y[3][arr_y[0].length - 1];
+				tmp_ref = document.getElementById("txtCh4");
+				if(tmp_value < 0){					
+					tmp_ref.style = "color: red";
+					plotCh4.paneColor = "#ff0000";
+				}
+				else{
+					tmp_ref.style = "";
+					plotCh4.paneColor = "#e3eaa7";
+				}
+				tmp_ref.textContent = tmp_value.toFixed(4);
+				//-------------------------------------------
+				
+				
+			
+				//-------------------------------------------
+				for(i = 0; i < 4; i++){
+					while(arr_x[i].length > max_len){
+						arr_x[i].splice(0, 1);
+					}				
+					while(arr_y[i].length > max_len){
+						arr_y[i].splice(0, 1);
+					}
+					
+					plotAll.addData(arr_x[i], arr_y[i], i);
+				}
+								
+				plotCh1.addData(arr_x[0], arr_y[0], 0);				
+				plotCh2.addData(arr_x[1], arr_y[1], 0);
+				plotCh3.addData(arr_x[2], arr_y[2], 0);
+				plotCh4.addData(arr_x[3], arr_y[3], 0);				
+				
+				
+				plotAll.rescalePlot();
+				
+				plotCh1.rescalePlot();
+				plotCh2.rescalePlot();
+				plotCh3.rescalePlot();
+				plotCh4.rescalePlot();				
+				//-------------------------------------------				
+				
+				time++;
+			}
+		
+		</script>
+<!---------------------------------------------------------------------------------------------------------------->
+	</body>
+</html>
