@@ -1,2 +1,2 @@
 # omPlot
-A lightweight and simple Java Script data plotter
+A lightweight and simple Java Script 2D data plotter
